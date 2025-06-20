@@ -10,48 +10,67 @@ export default function SignUp() {
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
+
+    // Extrair valores
+    const full_name = formData.get('full_name');
+    const email = formData.get('email');
+    const password = formData.get('password');
+    const confirm_password = formData.get('confirm_password');
+    const birthdate = formData.get('birthdate');
+    const role = formData.get('role');
+
+    // Validar campos obrigatórios
+    if (!full_name || !email || !password || !confirm_password || !birthdate || !role) {
+      setError("Todos os campos são obrigatórios.");
+      return;
+    }
+
+    // Validar passwords iguais
+    if (password.toString() !== confirm_password.toString()) {
+      setError("Passwords don't match");
+      return;
+    }
+
+    // Construir objeto user com strings garantidas
     const user = {
-      full_name: formData.get("full-name"),
-      email: formData.get("email"),
-      password: formData.get("password"),
-      _password: formData.get("confirm_password"),
-      birthdate: formData.get("birthdate"),
-      role: formData.get("role"),
+      full_name: full_name.toString(),
+      email: email.toString(),
+      password: password.toString(),
+      birthdate: birthdate.toString(),
+      role: role.toString(),
     };
 
+    setError(''); // limpar erro anterior se tudo ok
 
-    if (user.password !== user._password) {
-      setError("Passwords doens't match")
-      console.log("Passwords doesnt match")
-      return
-    }
-    await createUser(user)
+    await createUser(user);
 
-    // Create logic to redirect to login page (or some other page)
-
+    // Aqui podes redirecionar para outra página, ex: login
   }
+
   return (
     <div className='flex flex-col items-center justify-center border-blue-200 border-1 shadow-2xl rounded-md mt-10 w-[400px] mx-auto p-2'>
       <h1 className='text-2xl mb-5'>Create Account</h1>
       <p className='text-red-500 mb-3'>{error}</p>
       <form onSubmit={handleSubmit} className='flex flex-col items-center justify-center'>
         <p className='self-start text-sm mb-2'>You are a:</p>
-        <select required name="role" id="">
+        <select name="role" defaultValue={''} className="mb-4 w-full p-2 border rounded">
+          <option value="" disabled hidden>Select...</option>
           <option value="organizer">Organizer</option>
           <option value="player">Player</option>
-          <option value="" disabled selected hidden>Select</option>
         </select>
         <p className='self-start text-sm mb-2'>Full Name</p>
-        <input required name='full-name' type="text" placeholder="Full Name" />
+        <input name='full_name' type="text" placeholder="Full Name" className="mb-4 w-full p-2 border rounded" />
         <p className='self-start text-sm mb-2'>Email</p>
-        <input required name='email' type="email" placeholder="Email" />
+        <input name='email' type="email" placeholder="Email" className="mb-4 w-full p-2 border rounded" />
         <p className='self-start text-sm mb-2'>Password</p>
-        <input required name='password' type="password" placeholder="Password" />
+        <input name='password' type="password" placeholder="Password" className="mb-4 w-full p-2 border rounded" />
         <p className='self-start text-sm mb-2'>Repeat Password</p>
-        <input required name='confirm_password' type="password" placeholder="Password" />
+        <input name='confirm_password' type="password" placeholder="Password" className="mb-4 w-full p-2 border rounded" />
         <p className='self-start text-sm mb-2'>Birthdate</p>
-        <input required name='birthdate' type="date" />
-        <button>Create Account</button>
+        <input name='birthdate' type="date" className="mb-4 w-full p-2 border rounded" />
+        <button type="submit" className="bg-blue-600 text-white p-2 rounded hover:bg-blue-700 transition">
+          Create Account
+        </button>
       </form>
     </div>
   )
