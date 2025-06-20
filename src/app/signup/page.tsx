@@ -16,6 +16,7 @@ export default function SignUp() {
       password: formData.get("password"),
       _password: formData.get("confirm_password"),
       birthdate: formData.get("birthdate"),
+      role: formData.get("role"),
     };
 
 
@@ -34,6 +35,12 @@ export default function SignUp() {
       <h1 className='text-2xl mb-5'>Create Account</h1>
       <p className='text-red-500 mb-3'>{error}</p>
       <form onSubmit={handleSubmit} className='flex flex-col items-center justify-center'>
+        <p className='self-start text-sm mb-2'>You are a:</p>
+        <select required name="role" id="">
+          <option value="organizer">Organizer</option>
+          <option value="player">Player</option>
+          <option value="" disabled selected hidden>Select</option>
+        </select>
         <p className='self-start text-sm mb-2'>Full Name</p>
         <input required name='full-name' type="text" placeholder="Full Name" />
         <p className='self-start text-sm mb-2'>Email</p>
