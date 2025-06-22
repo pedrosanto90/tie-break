@@ -45,9 +45,10 @@ export default function SignUp() {
     const confirm_password = formData.get('confirm_password');
     const birthdate = formData.get('birthdate');
     const role = formData.get('role');
+    const gender = formData.get('gender')
 
     // Validar campos obrigatórios
-    if (!full_name || !email || !password || !confirm_password || !birthdate || !role) {
+    if (!full_name || !email || !password || !confirm_password || !birthdate || !role || !gender) {
       setError("Todos os campos são obrigatórios.");
       return;
     }
@@ -65,6 +66,7 @@ export default function SignUp() {
       password: password.toString(),
       birthdate: birthdate.toString(),
       role: role.toString(),
+      gender: gender.toString(),
     };
 
     setError(''); // limpar erro anterior se tudo ok
@@ -77,9 +79,10 @@ export default function SignUp() {
       }
       toast.success("Account created");
       setTimeout(() => {
-        router.push('/'); // redireciona para página de login
+        router.push('/'); // redireciona para página de login. Falta fazer pagina de login
       }, 1000);
     } catch (err) {
+      console.error(err)
       toast.error('Error creating account');
     }
 
@@ -109,6 +112,12 @@ export default function SignUp() {
           <input name='password' type="password" placeholder="Password" className="mb-4 w-full p-2 border rounded" />
           <p className='self-start text-sm mb-2'>Repeat Password</p>
           <input name='confirm_password' type="password" placeholder="Password" className="mb-4 w-full p-2 border rounded" />
+          <p className='self-start text-sm mb-2'>Gender</p>
+          <select id="gender" name='gender' disabled={loading} defaultValue={''} className="mb-4 w-full p-2 border rounded">
+            <option value="" disabled hidden>Select...</option>
+            <option value="m">Male</option>
+            <option value="f">Female</option>
+          </select>
           <p className='self-start text-sm mb-2'>Birthdate</p>
           <input name='birthdate' type="date" className="mb-4 w-full p-2 border rounded" />
           <button type="submit" className="bg-blue-600 text-white p-2 rounded hover:bg-blue-700 transition">
