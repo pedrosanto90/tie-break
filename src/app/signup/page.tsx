@@ -82,8 +82,6 @@ export default function SignUp() {
       user_id: "",
     };
 
-    setError("");
-
     try {
       // Change this to use an api route
       // Create api route
@@ -94,7 +92,7 @@ export default function SignUp() {
       });
       const data = await res.json();
 
-      user.user_id = data.id;
+      user.user_id = data.user.id.toString();
 
       insertData(user);
       if (!data) {
