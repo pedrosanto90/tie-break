@@ -1,0 +1,16 @@
+import { createUser } from "@/lib/users";
+import { NextRequest, NextResponse } from "next/server";
+
+export async function POST(request: NextRequest) {
+  const data = await request.json();
+  if (!data) {
+    console.error("Erro");
+    return;
+  }
+  console.log("data:", data);
+  const user = await createUser(data.user);
+  return NextResponse.json(user, {
+    status: 201,
+    statusText: "Created",
+  });
+}

@@ -1,7 +1,10 @@
 export interface User {
-  full_name: string;
-  email: string;
+  id?: string;
+  full_name?: string;
+  email?: string;
   password: string;
-  birthdate: string; // ou Date
-  role: string; // ajusta conforme necessário
+  birthdate?: Date;
+  role?: number;
+  gender?: string;
+  user_id?: string;
 }
