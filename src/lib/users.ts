@@ -1,7 +1,7 @@
 import { User } from "@/types/user";
 import { supabase } from "./supabase";
 
-export async function insertData(data: User) {
+async function insertData(data: User) {
   //Insert data into public.users table
   const { data: _user } = await supabase
     .from("users")
@@ -11,7 +11,6 @@ export async function insertData(data: User) {
       birthdate: data.birthdate,
       gender: data.gender,
       role: data.role,
-      user_id: data.id,
     })
     .select("*");
   return _user;
@@ -33,8 +32,9 @@ export async function createUser(data: User) {
     console.error("Sign up failed, user object is null or missing fields.");
     throw new Error("User signup failed or returned incomplete data.");
   }
-
+  insertData(data);
   if (error) throw error;
+  // Change this to return just necessary data like user data and session data
   return authData;
 }
 

@@ -1,6 +1,5 @@
 "use client";
 
-import { insertData } from "@/lib/users";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ToastContainer, toast } from "react-toastify";
@@ -79,7 +78,6 @@ export default function SignUp() {
       birthdate: birthdate instanceof Date ? birthdate : new Date(),
       role: Number(role),
       gender: gender.toString(),
-      user_id: "",
     };
 
     try {
@@ -92,9 +90,6 @@ export default function SignUp() {
       });
       const data = await res.json();
 
-      user.user_id = data.user.id.toString();
-
-      insertData(user);
       if (!data) {
         toast.error("Error creating account");
         return;
