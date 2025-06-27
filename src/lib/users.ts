@@ -33,6 +33,7 @@ export async function createUser(data: User) {
     throw new Error("User signup failed or returned incomplete data.");
   }
   insertData(data);
+
   if (error) throw error;
   // Change this to return just necessary data like user data and session data
   return authData;

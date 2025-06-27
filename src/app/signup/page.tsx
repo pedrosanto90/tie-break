@@ -10,6 +10,7 @@ export default function SignUp() {
   const [error, setError] = useState("");
   const [options, setOptions] = useState<{ id: string; role: string }[]>([]);
   const [loading, setLoading] = useState(true);
+  const [birthdate, setBirthdate] = useState("");
 
   useEffect(() => {
     async function fetchOptions() {
@@ -46,7 +47,6 @@ export default function SignUp() {
     const email = formData.get("email");
     const password = formData.get("password");
     const confirm_password = formData.get("confirm_password");
-    const birthdate = formData.get("birthdate");
     const role = formData.get("role");
     const gender = formData.get("gender");
 
@@ -64,29 +64,24 @@ export default function SignUp() {
       return;
     }
 
-    // Validar passwords iguais
+    // Validar passwords
     if (password.toString() !== confirm_password.toString()) {
       setError("Passwords don't match");
       return;
     }
 
-    // User object
-    const user = {
-      full_name: full_name.toString(),
-      email: email.toString(),
-      password: password.toString(),
-      birthdate: birthdate instanceof Date ? birthdate : new Date(),
-      role: Number(role),
-      gender: gender.toString(),
-    };
-
     try {
-      // Change this to use an api route
-      // Create api route
       const res = await fetch("/api/users/create", {
         method: "POST",
-        headers: { ContentType: "application/json" },
-        body: JSON.stringify({ user }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          full_name: full_name.toString(),
+          email: email.toString(),
+          password: password.toString(),
+          birthdate: birthdate,
+          role: Number(role),
+          gender: gender.toString(),
+        }),
       });
       const data = await res.json();
 
@@ -179,6 +174,8 @@ export default function SignUp() {
           <input
             name="birthdate"
             type="date"
+            value={birthdate}
+            onChange={(e) => setBirthdate(e.target.value)}
             className="mb-4 w-full p-2 border rounded"
           />
           <button
